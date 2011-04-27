@@ -60,53 +60,28 @@ public class RSSFetcher {
             if ( node instanceof Element ) {
             		elements.addAll((treeWalk( (Element) node, count )));
             } else {
+            	
+            	String comment = element.valueOf("comments");
+        		int episode_number = Integer.parseInt(comment.substring(comment.length()-3), comment.length()); // comment.length()-3), comment.length()
             
                 // do something....
             	if (element.getName() == "item" &&
             		(last_inserted == null ||
-            		element.valueOf("guid") != last_inserted.getProperty("guid"))) {
+            		((Object)episode_number != (last_inserted.getProperty("episode"))))) {
             		Element e = element;
             		String test = e.valueOf("description");
             		//output += element.valueOf("guid") + "\n";
             		Entity ep = new Entity("Episode");
             		
-            		String comment = e.valueOf("comment");
-            		int episode_number = Integer.parseInt(comment.substring(comment.length()-3));
-            		
-            		// FIXME will fail before ep100
-            		URL url;
-            		String output_data = "";
-					try {
-						url = new URL("http://www.grc.com/sn/sn-" + episode_number + ".txt");
-					
-						URLConnection conn = url.openConnection();
-                    	BufferedReader in = new BufferedReader(
-                                            	new InputStreamReader(
-                                            		conn.getInputStream()));
-                    	String inputLine;
-                    	while ((inputLine = in.readLine()) != null) 
-                    	output_data = inputLine;
-                    	in.close();
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					
-            		Text transscript = new Text(output_data);
+            		Text transscript = Transscripts.get(episode_number);
             		
             		ep.setProperty("title", e.valueOf("title"));
             		ep.setProperty("link", e.valueOf("link"));
             		ep.setProperty("description", new Text(e.valueOf("description")));
-            		ep.setProperty("author", e.valueOf("author"));
             		ep.setProperty("pubDate", e.valueOf("pubDate"));
-            		ep.setProperty("category", e.valueOf("category"));
-            		ep.setProperty("comment", e.valueOf("comment"));
-            		ep.setProperty("enclosure", e.valueOf("enclosure"));
-            		ep.setProperty("guid", e.valueOf("guid"));
-            		ep.setProperty("subtitle", e.valueOf("subtitle"));
-            		ep.setProperty("summary", e.valueOf("summary"));
             		ep.setProperty("duratation", e.valueOf("duratation"));
             		ep.setProperty("transscript", transscript);
+            		ep.setProperty("episode", episode_number);
             		
             		elements.add(ep);
             		last_inserted = ep;
