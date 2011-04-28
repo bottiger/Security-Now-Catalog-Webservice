@@ -33,7 +33,7 @@ public class ParseGRC extends HttpServlet {
 		final Logger log = Logger.getLogger(ParseGRC.class.getName());
 		
 		resp.getWriter().println("Scanning....\n");
-		URL url = new URL("http://www.grc.com/securitynow.htm");
+		URL url = new URL("https://www.grc.com/securitynow.htm");
 		
 		URLConnection conn = url.openConnection();
     	BufferedReader in = new BufferedReader(
@@ -107,7 +107,7 @@ public class ParseGRC extends HttpServlet {
     				if (m3.find()) {
     					episodeTitle = m3.group(1);
     					episodeDesc = m3.group(2);
-    					toc();
+    					tic();
     					transscript = Transscripts.get(episodeNumber);
     					toc();
     					saveNow = true;
