@@ -9,7 +9,7 @@ import com.google.appengine.api.datastore.Text;
 
 public class Transscripts {
 	
-	public static Text get(int episode_number) {
+	public static String get(int episode_number) {
 		URL url;
 		String output_data = "";
 		try {
@@ -19,7 +19,7 @@ public class Transscripts {
 			else
 				number = Integer.toString(episode_number);
 				
-			url = new URL("http://www.grc.com/sn/sn-" + number + ".txt");
+			url = new URL("https://www.grc.com/sn/sn-" + number + ".txt");
 		
 			URLConnection conn = url.openConnection();
         	BufferedReader in = new BufferedReader(
@@ -34,7 +34,7 @@ public class Transscripts {
 			e1.printStackTrace();
 		}
 		
-		return new Text(output_data);
+		return output_data;
 	}
 
 }

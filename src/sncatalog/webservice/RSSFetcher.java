@@ -73,11 +73,11 @@ public class RSSFetcher {
             		//output += element.valueOf("guid") + "\n";
             		Entity ep = new Entity("Episode");
             		
-            		Text transscript = Transscripts.get(episode_number);
+            		String transscript = Transscripts.get(episode_number);
             		
             		ep.setProperty("title", e.valueOf("title"));
             		ep.setProperty("link", e.valueOf("link"));
-            		ep.setProperty("description", new Text(e.valueOf("description")));
+            		ep.setProperty("description", e.valueOf("description"));
             		ep.setProperty("pubDate", e.valueOf("pubDate"));
             		ep.setProperty("duratation", e.valueOf("duratation"));
             		ep.setProperty("transscript", transscript);

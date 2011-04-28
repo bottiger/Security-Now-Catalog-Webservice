@@ -29,7 +29,7 @@ public class Security_Now_CatalogServlet extends HttpServlet {
 		String xml ="";
 		for (Object e: episodes) {
 			xml += ((Entity) e).getProperty("transscript") + "\n==================\n";
-			if (RssDataStore.storeEpisode((Entity) e))
+			if (EpisodeDataStore.storeEpisode((Entity) e))
 				resp.getWriter().println("Saved\n");
 			else
 				resp.getWriter().println("Not Saved\n");

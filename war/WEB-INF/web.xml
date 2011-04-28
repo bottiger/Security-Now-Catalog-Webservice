@@ -4,6 +4,16 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
+	<filter>
+           <filter-name>UrlRewriteFilter</filter-name>
+           <filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+           <filter-name>UrlRewriteFilter</filter-name>
+           <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 	<servlet>
 		<servlet-name>Security_Now_Catalog</servlet-name>
 		<servlet-class>sncatalog.webservice.Security_Now_CatalogServlet</servlet-class>
@@ -12,6 +22,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>GRC_Parser</servlet-name>
 		<servlet-class>sncatalog.webservice.ParseGRC</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>EpisodeRequester</servlet-name>
+		<servlet-class>sncatalog.webservice.EpisodeRequester</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Security_Now_Catalog</servlet-name>
 		<url-pattern>/update</url-pattern>
@@ -19,6 +33,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>GRC_Parser</servlet-name>
 		<url-pattern>/parse</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EpisodeRequester</servlet-name>
+		<url-pattern>/episode/</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
