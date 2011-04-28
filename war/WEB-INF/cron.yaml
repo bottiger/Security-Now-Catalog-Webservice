@@ -1,0 +1,4 @@
+cron:
+- description: Hourly Feed Update
+  url: /parse
+  schedule: every 30 minutes
