@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import sncatalog.shared.MobileEpisode;
+
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.Text;
 
@@ -38,7 +40,7 @@ public class Episode{
 		ep.setProperty("transscript", new Text(this.mobileEpisode.getTransscript()));
 		ep.setProperty("pubDate", this.mobileEpisode.getPubDate());
 		ep.setProperty("duration", this.mobileEpisode.getDuration());
-		ep.setProperty("episode", new Integer(this.mobileEpisode.getEpisode()));
+		ep.setProperty("episode", new Long(this.mobileEpisode.getEpisode()));
 		
 		return ep;
 	}

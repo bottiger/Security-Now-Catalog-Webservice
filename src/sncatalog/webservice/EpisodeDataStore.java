@@ -2,7 +2,13 @@ package sncatalog.webservice;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import sncatalog.shared.MobileEpisode;
 
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.FetchOptions;
@@ -10,9 +16,12 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.Text;
 
 public class EpisodeDataStore {
+	
+	private static final int defaultAmount = 10;
 	
 	public static boolean storeEpisode(Entity e) {
 		if (!episodeExist(e)) {
@@ -20,6 +29,37 @@ public class EpisodeDataStore {
 			return true;
 		}
 		return false;
+	}
+	
+	public static List<MobileEpisode> getNew() {
+		return EpisodeDataStore.getNew(defaultAmount, false);
+	}
+	
+	public static List<MobileEpisode> getNew(boolean lite) {
+		return EpisodeDataStore.getNew(defaultAmount, lite);
+	}
+	
+	public static List<MobileEpisode> getNew(int amount, boolean lite) {
+		List<MobileEpisode> mobileEpisodes = new LinkedList<MobileEpisode>();
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Query q = new Query("Episode");
+		q.addSort("episode", SortDirection.DESCENDING);
+		
+		PreparedQuery pq = datastore.prepare(q);
+		
+		for (Entity e: pq.asIterable(FetchOptions.Builder.withLimit(amount))) {
+			
+			Text de = new Text("");
+			Text tr = new Text("");
+			
+			if (!lite) {
+				de = (Text) e.getProperty("description");
+				tr = (Text) e.getProperty("transscript");
+			}
+			
+			mobileEpisodes.add(new MobileEpisode(e, de.getValue(), tr.getValue()));
+		}
+		return mobileEpisodes;
 	}
 	
 	public static MobileEpisode getEpisode(int number) {
@@ -44,8 +84,8 @@ public class EpisodeDataStore {
 		//Date date = new Date(pubDate*1000);
 		
 		MobileEpisode me = new MobileEpisode(episodeNumber.intValue(), 
-				title, link, pubDate, description.toString(), 
-				transscript.toString(), duration.intValue());
+				title, link, pubDate, description.getValue(), 
+				transscript.getValue(), duration.intValue());
 		
 		return me;
 	}
