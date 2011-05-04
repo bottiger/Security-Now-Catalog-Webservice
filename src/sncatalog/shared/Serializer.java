@@ -1,7 +1,9 @@
 package sncatalog.shared;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class Serializer {
@@ -17,6 +19,17 @@ public class Serializer {
 		return toHex(stream.toByteArray());
 	}
 	
+	public static Object deserialize(String hexString)  throws IOException, ClassNotFoundException {
+		byte[] serializedBytes = toByteArray(hexString);
+		ByteArrayInputStream bis = new ByteArrayInputStream(serializedBytes);
+		ObjectInputStream ois = new ObjectInputStream(bis); 
+		
+		Object o = null;
+		o = ois.readObject();
+		ois.close(); 
+		return o;
+	}
+	
 	public static String toHex( byte [] raw ) {
 		if ( raw == null ) {
 			return null;
@@ -29,7 +42,7 @@ public class Serializer {
 		return hex.toString();
 	}
 	
-	private byte[] toByeArray(String s) {
+	private static byte[] toByteArray(String s) {
 		int len = s.length();
 		byte[] data = new byte[len / 2];
 		for (int i = 0; i < len; i += 2) {

@@ -31,16 +31,16 @@ public class EpisodeDataStore {
 		return false;
 	}
 	
-	public static List<MobileEpisode> getNew() {
+	public static ArrayList<MobileEpisode> getNew() {
 		return EpisodeDataStore.getNew(defaultAmount, false);
 	}
 	
-	public static List<MobileEpisode> getNew(boolean lite) {
+	public static ArrayList<MobileEpisode> getNew(boolean lite) {
 		return EpisodeDataStore.getNew(defaultAmount, lite);
 	}
 	
-	public static List<MobileEpisode> getNew(int amount, boolean lite) {
-		List<MobileEpisode> mobileEpisodes = new LinkedList<MobileEpisode>();
+	public static ArrayList<MobileEpisode> getNew(int amount, boolean lite) {
+		ArrayList<MobileEpisode> mobileEpisodes = new ArrayList<MobileEpisode>();
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		Query q = new Query("Episode");
 		q.addSort("episode", SortDirection.DESCENDING);
@@ -57,7 +57,7 @@ public class EpisodeDataStore {
 				tr = (Text) e.getProperty("transscript");
 			}
 			
-			mobileEpisodes.add(new MobileEpisode(e, de.getValue(), tr.getValue()));
+			mobileEpisodes.add(MobileEpisodeWrapper.get(e, de.getValue(), tr.getValue()));
 		}
 		return mobileEpisodes;
 	}
