@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Entity;
 public class RSSUpdate extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		TransscriptUpdate.update();
 		String snRssFeed = "http://leoville.tv/podcasts/sn.xml";
 		RSSFetcher rss = new RSSFetcher(snRssFeed);
 		

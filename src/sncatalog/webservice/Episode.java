@@ -17,6 +17,15 @@ public class Episode extends MobileEpisode {
 	private Transscript transscript;
 
 	public Episode(int episode, String title, String link, 
+			Date pubDate, String description, Transscript transscript,
+			int duration) {
+		super(episode, title, link, pubDate, description, "", duration);
+		this.transscript = transscript;
+		this.mobileEpisode = new MobileEpisode(episode, title, link,
+				pubDate, description, transscript.valueOf(), duration);
+	}
+	
+	public Episode(int episode, String title, String link, 
 			String pubDate, String description, Transscript transscript,
 			int duration) {
 		super(episode, title, link, new Date(), description, "", duration);
@@ -33,7 +42,7 @@ public class Episode extends MobileEpisode {
 		}
 		
 		this.mobileEpisode = new MobileEpisode(episode, title, link,
-				date, description, "", duration);
+				date, description, transscript.valueOf(), duration);
 	}
 	
 	public Entity toEntity() {

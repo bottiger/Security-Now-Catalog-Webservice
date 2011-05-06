@@ -15,6 +15,10 @@ public class Transscript {
 	public Transscript(int episode_number) {
 		this.episode = episode_number;
 	}
+	
+	public Transscript(String transscript) {
+		this.transsscript = transscript;
+	}
 	 
 	public String valueOf() {
 		return this.get();

@@ -1,8 +1,8 @@
 cron:
 - description: Hourly Feed Update
   url: /update
-  schedule: every 6 hours
+  schedule: every 1 hours
 
 - description: Hourly Feed Update
   url: /parse
-  schedule: every 6 hours
+  schedule: every 24 hours

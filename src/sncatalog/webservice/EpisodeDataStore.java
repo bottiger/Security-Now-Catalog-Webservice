@@ -63,7 +63,11 @@ public class EpisodeDataStore {
 		return mobileEpisodes;
 	}
 	
-	public static MobileEpisode getEpisode(int number) {
+	public static Episode getEpisode(Long number) {
+		return EpisodeDataStore.getEpisode(number.intValue());
+	}
+	
+	public static Episode getEpisode(int number) {
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 		// The Query interface assembles a query
@@ -84,9 +88,9 @@ public class EpisodeDataStore {
 		
 		//Date date = new Date(pubDate*1000);
 		
-		MobileEpisode me = new MobileEpisode(episodeNumber.intValue(), 
+		Episode me = new Episode(episodeNumber.intValue(), 
 				title, link, pubDate, description.getValue(), 
-				transscript.getValue(), duration.intValue());
+				new Transscript(transscript.getValue()), duration.intValue());
 		
 		return me;
 	}
