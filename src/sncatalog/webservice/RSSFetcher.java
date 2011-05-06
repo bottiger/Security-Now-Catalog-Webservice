@@ -22,77 +22,79 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class RSSFetcher {
-	
+
 	private String url;
 	private Document feed;
-	
+
 	public RSSFetcher(String Url){
 		this.url = Url;
 		SAXReader reader = new SAXReader();
-        try {
+		try {
 			this.feed = reader.read(Url);
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String rawFetch() throws Exception {
 		return this.feed.asXML();
-    }
-	
-	public List<Episode> fetchEpisode(int number) throws Exception {
+	}
+
+	public List<Episode> fetchEpisodes() throws Exception {
 		Element root = this.feed.getRootElement();
-        //return new LinkedList();
-		return treeWalk(root, number);
+		return treeWalk(root);
 	}
-	
-	public List<Episode> episodeFetch() throws Exception {
-		return this.fetchEpisode(0);
-	}
-	
-	private List<Episode> treeWalk(Element element, int count) {
-		List<Episode> elements = new LinkedList<Episode>();
+
+	private List<Episode> treeWalk(Element element) {
+		List<Episode> episodes = new LinkedList<Episode>();
 		Episode last_inserted = null;
-		
-        for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
-            Node node = element.node(i);
-            if ( node instanceof Element ) {
-            		elements.addAll((treeWalk( (Element) node, count )));
-            } else {
-            	
-            	try {
-            	String comment = element.valueOf("comments");
-        		int episode_number = Integer.parseInt(comment.substring(comment.length()-3), comment.length()); // comment.length()-3), comment.length()
-            	
-            
-                // do something....
-            	if (element.getName() == "item" &&
-            		(last_inserted == null ||
-            		((Object)episode_number != (last_inserted.getEpisode())))) {
-            		Element e = element;
-            		
-            		Transscript transscript = new Transscript(episode_number);
-            		
-            		Episode episode = new Episode(episode_number, 
-            								e.valueOf("title"), 
-            								e.valueOf("link"), 
-            								e.valueOf("pubDate"), 
-            								e.valueOf("duratation"), 
-            								transscript, 
-            								Integer.parseInt(e.valueOf("duratation"))
-            								);
-            		
-            		elements.add(episode);
-            		last_inserted = episode;
-            	}
-            	
-            	
-                } catch (Exception e) {
-            		// no comment tag
-            	}
-            }
-        }
-        return elements;
-    }
+
+		for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
+			Node node = element.node(i);
+			if ( node instanceof Element ) {
+				episodes.addAll((treeWalk( (Element) node)));
+			} else {
+
+				// do something....
+				if (element.getName() == "item") {
+
+					String comment = element.valueOf("comments");
+					int episode_number = Integer.parseInt(comment.substring(comment.length()-3, comment.length())); // comment.length()-3), comment.length()
+					//int episode_number = 9; // Integer.parseInt
+					if (last_inserted == null ||
+							(episode_number != (last_inserted.getEpisode()))) {
+						Element e = element;
+
+						String title = e.valueOf("title");
+						Transscript transscript = new Transscript(episode_number);
+						String link = e.valueOf("link");
+						String pubDate = e.valueOf("pubDate");
+						String description = e.valueOf("itunes:summary");
+						
+						// parse duration from 1:38:42 into 99 min
+						String dur = e.valueOf("itunes:duration");
+						String[] times = dur.split(":");
+						int duration = 0;
+						for (int j = 0; j < 2; j++) // we only want hours:minutes
+							duration += Integer.parseInt(times[j]) + (60 * (1-j));
+						
+						Episode episode = new Episode(episode_number, 
+								title, 
+								link, 
+								pubDate, 
+								description, 
+								transscript, 
+								duration
+						);
+
+						episodes.add(episode);
+						last_inserted = episode;
+					}
+				}
+
+			}
+		}
+		return episodes;
+	}
 }

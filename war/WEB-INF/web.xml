@@ -15,8 +15,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     </filter-mapping>
 
 	<servlet>
-		<servlet-name>Security_Now_Catalog</servlet-name>
-		<servlet-class>sncatalog.webservice.Security_Now_CatalogServlet</servlet-class>
+		<servlet-name>RSSUpdate</servlet-name>
+		<servlet-class>sncatalog.webservice.RSSUpdate</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>GRC_Parser</servlet-name>
@@ -27,7 +27,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>sncatalog.webservice.EpisodeRequester</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Security_Now_Catalog</servlet-name>
+		<servlet-name>RSSUpdate</servlet-name>
 		<url-pattern>/update</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>

@@ -9,7 +9,7 @@ import org.dom4j.Element;
 import com.google.appengine.api.datastore.Entity;
 
 @SuppressWarnings("serial")
-public class Security_Now_CatalogServlet extends HttpServlet {
+public class RSSUpdate extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		String snRssFeed = "http://leoville.tv/podcasts/sn.xml";
@@ -20,7 +20,7 @@ public class Security_Now_CatalogServlet extends HttpServlet {
 		
 		List<Episode> episodes = null;
 		try {
-			episodes = rss.fetchEpisode(2);
+			episodes = rss.fetchEpisodes();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -30,9 +30,9 @@ public class Security_Now_CatalogServlet extends HttpServlet {
 		for (Episode e: episodes) {
 			xml += e.getTitle() + "\n==================\n";
 			if (EpisodeDataStore.storeEpisode(e))
-				resp.getWriter().println("Saved\n");
+				resp.getWriter().println(e.getEpisode().toString() + " Saved\n");
 			else
-				resp.getWriter().println("Not Saved\n");
+				resp.getWriter().println(e.getEpisode().toString() + " Not Saved\n");
 		}
 		
 		//resp.getWriter().println(xml);

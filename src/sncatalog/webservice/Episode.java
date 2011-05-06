@@ -21,7 +21,9 @@ public class Episode extends MobileEpisode {
 			int duration) {
 		super(episode, title, link, new Date(), description, "", duration);
 		this.transscript = transscript;
-		DateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+		
+		String dateFormat = pubDate.length() < 20 ? "dd MMM yyyy" : "EEE, dd MMM yyyy HH:mm:ss ZZZZ";
+		DateFormat formatter = new SimpleDateFormat(dateFormat);
 		Date date = null;
 		try {
 			date = (Date)formatter.parse(pubDate);
