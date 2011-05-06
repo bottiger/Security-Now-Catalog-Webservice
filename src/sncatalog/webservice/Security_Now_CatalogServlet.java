@@ -18,18 +18,18 @@ public class Security_Now_CatalogServlet extends HttpServlet {
 		resp.setContentType("text/plain");
 		//resp.getWriter().println("Hello, world");
 		
-		List episodes = null;
+		List<Episode> episodes = null;
 		try {
-			episodes = rss.episodeFetch(2);
+			episodes = rss.fetchEpisode(2);
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		String xml ="";
-		for (Object e: episodes) {
-			xml += ((Entity) e).getProperty("transscript") + "\n==================\n";
-			if (EpisodeDataStore.storeEpisode((Entity) e))
+		for (Episode e: episodes) {
+			xml += e.getTitle() + "\n==================\n";
+			if (EpisodeDataStore.storeEpisode(e))
 				resp.getWriter().println("Saved\n");
 			else
 				resp.getWriter().println("Not Saved\n");

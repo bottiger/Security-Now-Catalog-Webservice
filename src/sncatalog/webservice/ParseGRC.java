@@ -45,7 +45,7 @@ public class ParseGRC extends HttpServlet {
     	String episodeDate = null;
     	String episodeTitle = "";
     	String episodeDesc = null;;
-    	String transscript = null;
+    	Transscript transscript = null;
     	int episodeLength = 0;
     	boolean saveNow = false;
     	
@@ -83,7 +83,7 @@ public class ParseGRC extends HttpServlet {
     				episodeLength = Integer.parseInt(m4.group(3));
     				episodeTitle = m4.group(4);
     				episodeDesc = m4.group(5);
-    				transscript = Transscripts.get(episodeNumber);
+    				transscript = new Transscript(episodeNumber);
     				saveNow = true;
     			} else {
 
@@ -108,7 +108,7 @@ public class ParseGRC extends HttpServlet {
     					episodeTitle = m3.group(1);
     					episodeDesc = m3.group(2);
     					tic();
-    					transscript = Transscripts.get(episodeNumber);
+    					transscript = new Transscript(episodeNumber);
     					toc();
     					saveNow = true;
     				}

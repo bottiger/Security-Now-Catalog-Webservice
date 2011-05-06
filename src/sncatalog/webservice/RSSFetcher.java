@@ -41,19 +41,19 @@ public class RSSFetcher {
 		return this.feed.asXML();
     }
 	
-	public List<Entity> episodeFetch(int number) throws Exception {
+	public List<Episode> fetchEpisode(int number) throws Exception {
 		Element root = this.feed.getRootElement();
         //return new LinkedList();
 		return treeWalk(root, number);
 	}
 	
-	public List<Entity> episodeFetch() throws Exception {
-		return this.episodeFetch(0);
+	public List<Episode> episodeFetch() throws Exception {
+		return this.fetchEpisode(0);
 	}
 	
-	private List<Entity> treeWalk(Element element, int count) {
-		List<Entity> elements = new LinkedList<Entity>();
-		Entity last_inserted = null;
+	private List<Episode> treeWalk(Element element, int count) {
+		List<Episode> elements = new LinkedList<Episode>();
+		Episode last_inserted = null;
 		
         for ( int i = 0, size = element.nodeCount(); i < size; i++ ) {
             Node node = element.node(i);
@@ -61,30 +61,35 @@ public class RSSFetcher {
             		elements.addAll((treeWalk( (Element) node, count )));
             } else {
             	
+            	try {
             	String comment = element.valueOf("comments");
         		int episode_number = Integer.parseInt(comment.substring(comment.length()-3), comment.length()); // comment.length()-3), comment.length()
+            	
             
                 // do something....
             	if (element.getName() == "item" &&
             		(last_inserted == null ||
-            		((Object)episode_number != (last_inserted.getProperty("episode"))))) {
+            		((Object)episode_number != (last_inserted.getEpisode())))) {
             		Element e = element;
-            		String test = e.valueOf("description");
-            		//output += element.valueOf("guid") + "\n";
-            		Entity ep = new Entity("Episode");
             		
-            		String transscript = Transscripts.get(episode_number);
+            		Transscript transscript = new Transscript(episode_number);
             		
-            		ep.setProperty("title", e.valueOf("title"));
-            		ep.setProperty("link", e.valueOf("link"));
-            		ep.setProperty("description", e.valueOf("description"));
-            		ep.setProperty("pubDate", e.valueOf("pubDate"));
-            		ep.setProperty("duratation", e.valueOf("duratation"));
-            		ep.setProperty("transscript", transscript);
-            		ep.setProperty("episode", episode_number);
+            		Episode episode = new Episode(episode_number, 
+            								e.valueOf("title"), 
+            								e.valueOf("link"), 
+            								e.valueOf("pubDate"), 
+            								e.valueOf("duratation"), 
+            								transscript, 
+            								Integer.parseInt(e.valueOf("duratation"))
+            								);
             		
-            		elements.add(ep);
-            		last_inserted = ep;
+            		elements.add(episode);
+            		last_inserted = episode;
+            	}
+            	
+            	
+                } catch (Exception e) {
+            		// no comment tag
             	}
             }
         }

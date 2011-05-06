@@ -7,17 +7,27 @@ import java.net.URLConnection;
 
 import com.google.appengine.api.datastore.Text;
 
-public class Transscripts {
+public class Transscript {
 	
-	public static String get(int episode_number) {
+	private int episode;
+	private String transsscript;
+	
+	public Transscript(int episode_number) {
+		this.episode = episode_number;
+	}
+	 
+	public String valueOf() {
+		return this.get();
+	}
+	
+	private String get() {
 		URL url;
-		String output_data = "";
 		try {
 			String number;
-			if (episode_number < 100) 
-				number = "0" + Integer.toString(episode_number);
+			if (this.episode < 100) 
+				number = "0" + Integer.toString(episode);
 			else
-				number = Integer.toString(episode_number);
+				number = Integer.toString(episode);
 				
 			url = new URL("https://www.grc.com/sn/sn-" + number + ".txt");
 		
@@ -27,14 +37,14 @@ public class Transscripts {
                                 		conn.getInputStream()));
         	String inputLine;
         	while ((inputLine = in.readLine()) != null) 
-        	output_data += inputLine;
+        	this.transsscript += inputLine;
         	in.close();
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
-		return output_data;
+		return this.transsscript;
 	}
 
 }

@@ -23,7 +23,8 @@ public class EpisodeDataStore {
 	
 	private static final int defaultAmount = 10;
 	
-	public static boolean storeEpisode(Entity e) {
+	public static boolean storeEpisode(Episode episode) {
+		Entity e = episode.toEntity();
 		if (!episodeExist(e)) {
 			datastore().put(e);
 			return true;
