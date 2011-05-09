@@ -46,8 +46,8 @@ public class EpisodeRequester extends HttpServlet {
 				if (cache.containsKey(episodeId)) {
 					serializedObject = (String) cache.get(episodeId);
 				} else {
-					MobileEpisode me = EpisodeDataStore.getEpisode(episodeId);
-					serializedObject = Serializer.serialize(me);
+					Episode e = EpisodeDataStore.getEpisode(episodeId);
+					serializedObject = Serializer.serialize(e.toMobile());
 					cache.put(episodeId, serializedObject);
 				}
 			}
