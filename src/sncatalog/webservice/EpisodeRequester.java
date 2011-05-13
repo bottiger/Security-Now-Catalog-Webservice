@@ -55,18 +55,25 @@ public class EpisodeRequester extends HttpServlet {
 			String type = req.getParameter("lite");
 			ArrayList<MobileEpisode> mes = null;
 			if (type.equals("1")) {
-				if (cache.containsKey("lite")) {
-					mes = (ArrayList<MobileEpisode>) cache.get("lite");
+				if (cache.containsKey("lite3")) {
+					mes = (ArrayList<MobileEpisode>) cache.get("lite3");
 				} else {
 					mes = EpisodeDataStore.getNew(true);
-					cache.put("lite", mes);
+					cache.put("lite3", mes);
+				}
+			} else if (type.equals("2")) {
+				if (cache.containsKey("all6")) {
+					mes = (ArrayList<MobileEpisode>) cache.get("all6");
+				} else {
+					mes = EpisodeDataStore.getAll();
+					cache.put("all6", mes);
 				}
 			} else {
-				if (cache.containsKey("full")) {
-					mes = (ArrayList<MobileEpisode>) cache.get("full");
+				if (cache.containsKey("full2")) {
+					mes = (ArrayList<MobileEpisode>) cache.get("full2");
 				} else {
 					mes = EpisodeDataStore.getNew();
-					cache.put("full", mes);
+					cache.put("full2", mes);
 				}
 			}
 			serializedObject = Serializer.serialize(mes);

@@ -28,6 +28,11 @@
             <from>/lite-episode/new</from>
             <to>/episode/?id=new&amp;lite=1</to>
     </rule>
+    
+    <rule>
+            <from>/lite-episode/all</from>
+            <to>/episode/?id=new&amp;lite=2</to>
+    </rule>
 
 	<rule>
             <from>/episode/new</from>

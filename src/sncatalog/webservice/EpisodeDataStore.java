@@ -32,6 +32,10 @@ public class EpisodeDataStore {
 		return false;
 	}
 	
+	public static ArrayList<MobileEpisode> getAll() {
+		return EpisodeDataStore.getNew(1000, true);
+	}
+	
 	public static ArrayList<MobileEpisode> getNew() {
 		return EpisodeDataStore.getNew(defaultAmount, false);
 	}
